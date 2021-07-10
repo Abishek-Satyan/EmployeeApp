@@ -1,0 +1,27 @@
+.emp-add-btn:hover{
+ background-color:#fff;
+ color: #000;
+}
+.emp-btn-container{
+    text-align: center;
+}
+.btn-section{
+    margin-top:100px;
+}
+.form-container{
+ background-color: rgb(253, 253, 253);
+ border-radius:10px;
+ padding:10px 20px;
+ position: absolute;
+ top:50%;
+ left:50%;
+ transform: translate(-50%,-50%);
+ z-index: 10;
+ border:2px solid rgba(17, 136, 233, 0.931);
+}
+.gender-container{
+    margin-top: 13px;
+}
+.table-container{
+    margin-top:50px;
+}

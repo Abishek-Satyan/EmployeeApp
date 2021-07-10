@@ -1,0 +1,9 @@
+<ng-multiselect-dropdown 
+  [placeholder]="'Select known languages '"
+  [settings]="dropdownSettings"
+  [data]="dropdownList"
+  [(ngModel)]="selectedItems"
+  (onSelect)="showbtn()"
+>
+</ng-multiselect-dropdown>
+<button *ngIf="showBtn" class="btn btn-primary selection" (click)="display()">Confirm Selection</button>
