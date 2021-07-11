@@ -11,7 +11,6 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 export class LanguageselectComponent implements OnInit {
   @Output() datashare=new EventEmitter;
   showBtn=true
-  
   dropdownList=[{"id":1,"language":"English"},
   {"id":2,"language":"Hindi"},
   {"id":3,"language":"Malayalam"},

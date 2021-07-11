@@ -25,3 +25,7 @@
 .table-container{
     margin-top:50px;
 }
+.error-text{
+    margin-top:10px;
+    color: red;
+}

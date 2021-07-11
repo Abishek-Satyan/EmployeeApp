@@ -17,10 +17,12 @@
         <div class="col-md-6">
           <label for="Name" class="form-label">Name</label>
           <input type="text" class="form-control" id="Name" formControlName="ename"/>
+          <div *ngIf="employeeForm.get('ename')?.errors" class="error-text">*Employee name required</div>
         </div>
         <div class="col-md-6">
           <label for="Age" class="form-label">Age</label>
           <input type="text" class="form-control" id="Age" formControlName="age" />
+          <div *ngIf="employeeForm.get('age')?.errors" class="error-text">*Age required</div>
         </div>
         <div class="col-md-6 ">
           <div class="gender-container">
@@ -31,13 +33,15 @@
           <label class="form-check-label" for="flexRadioDefault2">
             Female
           </label>
+          <div *ngIf="employeeForm.get('gender')?.errors" class="error-text">*Gender required</div>
         </div>
         </div>
         <div class="col-md-6">
           <label class="form-label">Join Date</label>&nbsp;
-          <input matInput [max]="maxdate" [matDatepicker]="picker" placeholder="Choose a date" formControlName="joindate"/>
+          <input matInput [max]="maxdate" [matDatepicker]="picker" placeholder="MM/DD/YY" formControlName="joindate"/>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
+          <div *ngIf="employeeForm.get('joindate')?.errors" class="error-text">*Join date required</div>
         </div>
         <div class="col-md-6">
           <h3>Area of interests (pick any 4)</h3>
@@ -48,12 +52,13 @@
         </div>
         <div class="col-md-6">
           <app-languageselect (datashare)="getData($event)"></app-languageselect>
+          <div class="error-text" *ngIf="!buttonStatus">*Submit only possible after confirming selection</div>
         </div>
         
       
         <div class="col-12">
-          <button type="submit" class="btn btn-primary " (click)="submit()">Submit</button>&nbsp;&nbsp;
-          <button class="btn btn-primary" (click)="popupForm()">Cancel</button>
+          <button type="submit" class="btn btn-primary " [disabled]="!buttonStatus" (click)="submit()">Submit</button>&nbsp;&nbsp;
+          <button class="btn btn-primary" (click)="cancel()">Cancel</button>
         </div>
       </form>
     </div>
@@ -67,22 +72,32 @@
     <table class="table table-light table-bordered border-primary">
       <thead>
         <tr>
+          <th scope="col">Id</th>
           <th scope="col">Name</th>
           <th scope="col">Age</th>
           <th scope="col">Gender</th>
           <th scope="col">Join Date</th>
           <th scope="col">Area of Interests</th>
           <th scope="col">Languages</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let employee of empdetails">
+          <td>{{employee.empid}}</td>
           <td>{{employee.ename}}</td>
           <td>{{employee.age}}</td>
           <td>{{employee.gender}}</td>
           <td>{{employee.joindate|date}}</td>
           <td>{{employee.interests}}</td>
           <td>{{employee.languages}}</td>
+          <td><button type="button" class="btn btn-dark emp-add-btn" (click)="editData(employee)">
+            Edit
+          </button></td>
+          <td><button type="button" class="btn btn-dark emp-add-btn "(click)="deleteData(employee.empid)">
+            Delete
+          </button></td>
         </tr>
     </table>
   </div>
