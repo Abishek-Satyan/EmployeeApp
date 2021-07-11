@@ -22,7 +22,7 @@
         <div class="col-md-6">
           <label for="Age" class="form-label">Age</label>
           <input type="text" class="form-control" id="Age" formControlName="age" />
-          <div *ngIf="employeeForm.get('age')?.errors" class="error-text">*Age required</div>
+          <div *ngIf="employeeForm.get('age')?.errors" class="error-text">*Age required (should be greater than 18)</div>
         </div>
         <div class="col-md-6 ">
           <div class="gender-container">

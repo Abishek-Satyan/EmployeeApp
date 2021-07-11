@@ -1,7 +1,17 @@
 import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
+
+function ageValidator(control:AbstractControl):{[key:string]:boolean}|null{
+  if(control.value<18){
+    return{
+      "under18":true
+    }
+    
+  }
+  return null
+}
 
 @Component({
   selector: 'app-empportal',
@@ -30,14 +40,16 @@ export class EmpportalComponent implements OnInit {
   empid:number=0
   employeeForm=this.fb.group({
     ename:['',[Validators.required]],
-    age:['',[Validators.required]],
+    age:['',[Validators.required,ageValidator]],
     gender:['',[Validators.required]],
     joindate:['',[Validators.required]]
   })
+ 
   constructor(private fb:FormBuilder,private http:HttpClient) {this.displaydata() }
 
   ngOnInit(): void {
   }
+  
   popupForm(){
     this.showForm=!this.showForm
     this.edit=false
@@ -139,8 +151,13 @@ export class EmpportalComponent implements OnInit {
  editData(employee:any){
  console.log(employee);
  this.edit=true
+ this.employeeForm.get('ename')?.setValue(employee.ename)
+ this.employeeForm.get('age')?.setValue(employee.age)
+ this.employeeForm.get('gender')?.setValue(employee.gender)
+ this.employeeForm.get('joindate')?.setValue(employee.joindate)
  this.showForm=true
  this.empid=employee.empid
+ 
  console.log(this.empid)
  }
  deleteData(empid:Number){
