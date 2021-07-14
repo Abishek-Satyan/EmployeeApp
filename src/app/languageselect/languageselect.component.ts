@@ -41,4 +41,7 @@ export class LanguageselectComponent implements OnInit {
  showbtn(){
    this.showBtn=true
  }
+ edit(){
+   this.showBtn=true
+ }
 }

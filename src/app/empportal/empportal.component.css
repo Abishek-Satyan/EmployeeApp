@@ -27,5 +27,18 @@
 }
 .error-text{
     margin-top:10px;
-    color: red;
+    color: rgb(238, 122, 122);
+    font-size:12px;
+}
+.upld-btn{
+    margin-top:10px;
+    display: block;
+}
+.file-upload{
+    padding:10px 20px;
+    border:2px solid rgba(17, 136, 233, 0.931);
+    background-color: rgb(240, 238, 238);
+}
+.check-mark{
+color:green;
 }

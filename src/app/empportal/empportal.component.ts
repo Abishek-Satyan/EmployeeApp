@@ -25,6 +25,12 @@ export class EmpportalComponent implements OnInit {
   maxdate=new Date()
   edit:boolean=false
   buttonStatus=false
+  interesterror=false
+  languageserror=false
+  selectedfile:any
+  fileUploadStatus=false
+  filename:String=""
+  fileerror=false
   interestData=[
     {interest:"Development",isChecked:false},
     {interest:"Product Design",isChecked:false},
@@ -42,7 +48,8 @@ export class EmpportalComponent implements OnInit {
     ename:['',[Validators.required]],
     age:['',[Validators.required,ageValidator]],
     gender:['',[Validators.required]],
-    joindate:['',[Validators.required]]
+    joindate:['',[Validators.required]],
+    file:['']
   })
  
   constructor(private fb:FormBuilder,private http:HttpClient) {this.displaydata() }
@@ -86,42 +93,66 @@ export class EmpportalComponent implements OnInit {
     const joindate=this.employeeForm.value.joindate;
     const interests=this.interestSelected;
     const languages=this.languages;
-    const data={
-      empid,
-      ename,
-      age,
-      gender,
-      joindate,
-      interests,
-      languages
-    }
-    if(this.employeeForm.valid){
-    this.buttonStatus=true
-    if(!this.edit){
-      this.http.post("http://localhost:3000/submit",data).subscribe((result:any)=>{
-        if(result){
-          this.popupForm()
-          window.location.reload()
-          alert("Employee Details added")
-        }
-      },(result:any)=>{
-        window.location.reload()
-        alert(result.error.message)
-      })
+    const filename=this.filename
+    if((interests.length<4)||(languages.length<1)){
+      if(interests.length<4){
+        this.interesterror=true
+      }
+      else if(languages.length<1){
+        this.languageserror=true
+      }
     }
     else{
-      this.http.post("http://localhost:3000/edit",data).subscribe((result:any)=>{
-        if(result){
-          this.popupForm()
-          window.location.reload()
-          alert("Employee Details Edited")
+      this.interesterror=false
+      this.languageserror=false
+      const data={
+        empid,
+        ename,
+        age,
+        gender,
+        joindate,
+        interests,
+        languages,
+        filename 
+      }
+     
+      
+      if(this.employeeForm.valid){
+        this.buttonStatus=true
+        if(!this.edit){
+          if(this.fileUploadStatus){
+            this.http.post("http://localhost:3000/submit",data).subscribe((result:any)=>{
+            if(result){
+              this.popupForm()
+              window.location.reload()
+              alert("Employee Details added")
+            }
+          },(result:any)=>{
+            window.location.reload()
+            alert(result.error.message)
+          })
+          }
+          else{
+            this.fileerror=true
+          }
         }
-      },(result:any)=>{
-        window.location.reload()
-        alert(result.error.message)
-      })
+        else{
+          this.http.post("http://localhost:3000/edit",data).subscribe((result:any)=>{
+            if(result){
+              this.popupForm()
+              window.location.reload()
+              alert("Employee Details Edited")
+            }
+          },(result:any)=>{
+            window.location.reload()
+            alert(result.error.message)
+          })
+        }
+        } 
     }
-    } 
+   
+   
+    
     
   }
   displaydata(){
@@ -174,5 +205,35 @@ export class EmpportalComponent implements OnInit {
  }
  cancel(){
    window.location.reload()
+ }
+ fileSelection(event:any){
+   this.selectedfile=event.target.files[0]
+   console.log(this.selectedfile);
+ }
+ upload(){
+   const allowedtypes="application/pdf"
+   
+   if(this.selectedfile && this.selectedfile.type==allowedtypes){
+    const formData=new FormData()
+    formData.append('file',this.selectedfile)
+    this.http.post("http://localhost:3000/uploadFile",formData).subscribe((result:any)=>{
+      this.filename=result.filename
+      this.fileUploadStatus=true
+    })
+   }
+   else if(!(this.selectedfile)){
+    alert("please chose a file to upload")
+   }
+   else{
+     alert("unsupported file format")
+   }
+   
+   
+ }
+ downloadcv(employee:any){
+   console.log(employee.filename);
+   const filename=employee.filename
+  
+   window.open("http://localhost:3000/download/"+filename)
  }
 }
